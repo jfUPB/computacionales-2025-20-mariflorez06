@@ -105,4 +105,35 @@ M=-1
 @LEER
 0;JMP
 ```
+Una idea de cómo sería en c++, aunque no lo sea
+```c++
+//No es c++
 
+Memoria[screen]=-1;
+contador=0;
+
+//Leer
+
+int temp;
+
+while (1)
+{
+  temp = KBD;	
+  if (temp == 100)
+   {
+     //Derecha
+     memoria[contador+screen]=0;
+     contador = contador + 1;
+     memoria[contador+screen]=-1;
+   }
+  else if (temp == 150)
+   {
+     //Izquierda
+     memoria[contador+screen]=0;
+     contador = contador - 1;
+     memoria[contador+screen]=-1;
+   }
+}
+```
+
+### Actividad 4
