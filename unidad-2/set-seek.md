@@ -137,3 +137,145 @@ while (1)
 ```
 
 ### Actividad 4
+#### Paso de lenguaje c++ a lenguaje ensamblador:
+```c++
+int i =1;
+int sum=0;
+```
+En lenguaje ensamblador es: 
+```asm
+@i
+M=1
+@sum
+M=0
+```
+```c++
+while (i<=100)
+```
+Esa condicion en lenguaje ensamblador es:
+```asm
+@i
+D=M // D=i
+@100
+D=D-A // D=i-100
+@END
+D;JGT
+```
+```c++
+sum+=i;
+i++;
+```
+En lenguaje ensamblador es: 
+```asm
+@i
+D=M // D=i
+@sum
+M=D+M // sum=sum+i
+@i
+M=M+1 // i=i+1
+```
+#### Por que el while y el for son equivalentes?
+  Son equivalentes porque el for es una forma mas compacta del ciclo while, al final obtendremos lo mismo y en lenguaje ensamblador son iguales.
+```asm
+// Adds1+...+100.
+ @i //i se refiere a una ubicacion en la memoria.
+ M=1 //i=1
+ @sum //sum se refiere a una ubicacion en la memoria.
+ M=0 //sum=0
+ (LOOP)
+ @i
+ D=M //D=i
+ @100
+ D=D-A //D=i-100
+ @END
+ D;JGT //If(i-100)>0 gotoEND
+ @i
+ D=M //D=i
+ @sum
+ M=D+M //sum=sum+i
+ @i
+ M=M+1 //i=i+1
+ @LOOP
+ 0;JMP //Va al LOOP
+ (END)
+ @END
+ 0;JMP //Loop infinito
+```
+### Actividad 5
+#### Punteros
+  Es una variable donde se pueden guardar direcciones.
+```c++
+//Variable que guarda un valor (entero en este caso).
+int i;
+
+//Declarar un puntero de nombre ptr, es una variable que guarda direcciones de otras variables.
+int* ptr;
+
+int i + 5;
+int* ptr = &i;
+//Error int* ptr = i; el & ayuda a definir su variable.
+
+//Leer con el puntero.
+int j = *ptr;
+
+//Escribir con el puntero.
+*ptr = 25;
+```
+#### Convierte estos programas a ensamblador y realiza la simulación paso a paso. 
+1.
+```c++
+int a=10;
+int* p;
+p=&a;
+*p=20;
+```
+En lenguaje ensamblador:
+```asm
+@10
+D=A
+@a //16
+M=D
+
+@a
+D=A
+@p //17
+M=D
+
+@20
+D=A
+@p
+A=M
+M=D
+```
+
+2. 
+```c++
+int a = 10;
+int b = 5;
+int *p;
+p = &a;
+b = *p;
+```
+En lenguaje emsamblador:
+```asm
+@10
+D=A
+@a //16
+M=D
+
+@5
+D=A
+@b //17
+M=D
+
+@a
+D=M
+@p //18
+M=D
+
+
+@p
+D=M
+@b
+M=D
+```
