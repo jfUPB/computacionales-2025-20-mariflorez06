@@ -129,11 +129,13 @@ public:
 	void keyPressed(int key);
 	void mousePressed(int x, int y, int button);
 };
+
 ```
 
 Código para ofApp.cpp:
 
 ``` cpp
+
 #include "ofApp.h"
 
 //--------------------------------------------------------------
@@ -204,10 +206,12 @@ void ofApp::mousePressed(int x, int y, int button)
 	drawingActive = !drawingActive;
 }
 
+
 ```
 
 Código para main.cpp:
 ``` cpp
+
 #include "ofMain.h"
 #include "ofApp.h"
 
