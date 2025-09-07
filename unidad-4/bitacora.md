@@ -5,6 +5,7 @@
 Código para ofApp.h:
 
 ``` cpp
+
 #pragma once
 #include "ofMain.h"
 
@@ -229,9 +230,11 @@ int main( ){
 	ofRunMainLoop();
 
 }
+
 ```
 
 ## Demostración:
+
 
 [Aquí está el video demostrativo de mi aplicación](https://www.youtube.com/watch?v=HHO6_uSXqfI)
 
