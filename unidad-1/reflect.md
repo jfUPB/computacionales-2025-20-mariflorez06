@@ -1,5 +1,129 @@
 # Unidad 1
+## Fase: Set-Seek 💡🔎
+### Actividad 1
+- Ciclo feetch-decode-execute
+```asm
+@1
+D=A
+@2
+D=D+A
+@16
+M=D
+@END
+(END)
+0;JMP
+```
+- Notas:
+  
+A (addres-direcciones) y D son 'variables', @1 guarda el valor en A, M es la memoria y guarda el dato en la memoria RAM, el apartado de PC me dice que instrucción esta leyendo y va a ejecutar, incrementa de uno en uno; (0;JMP) es una dirección en la ROM, JMP es jump (salto) y lo realiza a la posición guardada en A, 0 es una operación; (END) es una etiqueta y da la posición en la que está, es decir, el @END me pondrá un @7 en la posición 6.ROM guarda la receta/instrucciones, RAM hoja en blanco.
 
+- Experimento:
+```asm
+@5
+D=A
+@10
+D=D+A
+@20
+M=D
+@END
+(END)
+0;JMP
+```
+- Pregunta:
+  
+  1. Qué diferencia hay entre los datos almacenados en la RAM y en la ROM?
+     
+  = La RAM me permite acceder de manera rápida, pero solo almacena datos y programas que se usan en la actualidad, una vez apagues el equipo, estos datos se borrarán. La ROM por el contrario solo permite leer los datos, no modificarlos o escribirlos; y al apagar el equipo los datos o programas quedaran almacenados.
+
+### Actividad 2
+- Preguntas:
+  
+  1. Identifica una instrucción que use la ALU y explica qué hace.
+     
+      D=D-A. Le resta a D el valor de A y vuelve a almacenarlo en D.       
+  2. ¿Para qué sirve el registro PC?
+     
+     Es un contador que indica que instruccion sera leida a continuacion.
+  
+  3. ¿Cuál es la diferencia entre @i y @READKEYBOARD?
+     
+     @i es una variable que es asignada en la memoria RAM comenzando en el 16, es decir, si luego hago @j este quedara en la posicion 17 de la RAM. @READKEYBOARD es una etiqueta de un dato en la ROM, cuando esta etiqueta se usa, se vuelve a la parte del codigo donde esta fue etiquetada.
+  
+  4. Describe qué se necesita para leer el teclado y mostrar información en la pantalla.
+     
+     Para leer el teclado se utiliza la etiqueta @KBD y D=M, que carga en D el registro del teclado, si M=0 el codigo sigue, pero si en M hay algo diferente a 0, salta al codigo de @KEYPRESSED. Y para leerlo se utiliza el @SCREEN que apaga y prende pixeles.
+     
+  5. Identifica un bucle en el programa y explica su funcionamiento.
+      
+      @READKEYBOARD  0;JMP marcan el bucle. Comienza en (READKEYBOARD) y empieza leyendo el teclado, si hay tecla salta al @KEYPRESSED si no, sigue leyendo el codigo; luego hace comprobaciones con @i y @SCREEN, si @i es muy pequeno D;JLE salta al inicio, sino decrementa @i y apaga los pixeles M=0. Y vuelve a (READKEYBOARD).
+     
+  6. Identifica una condición en el programa y explica su funcionamiento.
+      
+      D;JNE = Si el valor de D No es Igual A 0, salta.
+     
+      D;JLE = Si el valor de D Es Menor o Igual a 0, salta.
+     
+      D;JGE = Si el valor de D es Mayor o Igual a 0, salta.
+
+## Fase: Apply 🛠️
+### Actividad 3
+- Control de flujo con saltos
+```asm
+(LOOP)
+@5
+D=M
+@10
+D=D-A
+
+@MENOR
+D;JLT
+
+(MAYOR)
+@7
+M=0
+@LOOP
+0;JMP
+
+(MENOR)
+@7
+M=1
+@LOOP
+0;JMP
+```
+### Actividad 4
+- Implementando un ciclo simple
+```asm
+@12
+M=0
+
+@1
+D=A
+@13
+M=D
+
+(LOOP)
+@13
+D=M
+@5
+D=D-A
+@END
+D;JGT
+
+@13
+D=M
+@12
+M=D+M
+
+@13
+M=M+1
+
+@LOOP
+0;JMP
+
+(END)
+@END
+0;JMP
+```
 ## 🤔 Fase: Reflect
 
 ### Autoevaluación
@@ -58,4 +182,5 @@ D;JGT.
   La dificultad un 3, me parece que toda la unidad es fácil de comprender y de poner en práctica.
   
   
+
 
