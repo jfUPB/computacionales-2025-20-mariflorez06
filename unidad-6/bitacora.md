@@ -42,3 +42,7 @@ Primero creo que hay una variable que toma el valor en X y Y del mouse, al presi
 ##### 3. Construye un diagrama de secuencia que muestre cómo funciona el patrón Observer al presionar una tecla.
 
 ##### 4. ¿Qué ventajas crees que ofrece usar el patrón Observer en esta aplicación en comparación con, por ejemplo, que ofApp::update recorriera todas las partículas y les dijera directamente que cambien su comportamiento basado en una variable global? Piensa en términos de acoplamiento y extensibilidad.
+
+
+#### Autoevaluación 
+1, ya que realice una actividad completa y esta autoevaluación. Pienso terminar esta unidad y entregarla completa, ya que perdi un poco de tiempo al mejorar unidades anteriores.
