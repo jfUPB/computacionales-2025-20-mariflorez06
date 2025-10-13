@@ -109,13 +109,6 @@ b. ¿Qué información necesita el método fábrica para realizar su trabajo?
 c. ¿Qué devuelve si se le pasa un tipo desconocido? ¿Cómo podrías mejorar esto?
 = Una particula no personalizada. Lo mejoraria agregando otra condicion que lance un error, de que la particula no cumple con algun parametro conocido.
 
-##### Uso de Factory
- a. ¿Cómo se utiliza la ParticleFactory para poblar el vector particles?
- =
-
- b. ¿Cómo se vería ofApp::setup si no usara la fábrica y tuviera que crear y configurar cada tipo de partícula (star, shooting_star, planet) directamente usando new Particle() y luego ajustando sus propiedades (size, color, velocity)?
- = 
-
 ##### 1. Explica con tus propias palabras el propósito del patrón Factory Method (o Simple Factory, en este caso). ¿Qué problema principal aborda en la creación de objetos?
 Es para crear objetos sin tener que estar repitiendo el new mas lo demas; ademas se crean los objetos en el mismo lugar y permite encapsular variantes tras una interfaz uniforme.
 
