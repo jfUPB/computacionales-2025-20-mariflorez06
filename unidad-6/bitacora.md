@@ -1,5 +1,4 @@
 # Bitácora de aprendizaje de la unidad 6
-
 ### Actividad 1
 
 ##### 1. ¿Cómo puedes interactuar con la aplicación? Menciona específicamente las teclas y qué efecto parecen tener sobre las partículas.
@@ -31,18 +30,117 @@ Primero creo que hay una variable que toma el valor en X y Y del mouse, al presi
 
 ### Actividad 2
 
-##### Análisis del caso de estudio
+#### Análisis del caso de estudio
+##### Identifica los roles:
+a. ¿Qué clase actúa como la interfaz Observer? ¿Qué método define?
+= class Observer, define ~Observer() y onNotify(const std : : string & event)
 
+b. ¿Qué clase actúa como Subject? ¿Qué métodos proporciona para gestionar observadores y notificar?
+= class Subject, para gestionar los observadores addObserver(Observer * observer), removeObserver(Observer * observer), para notificar notify(const std : : string & event)
 
+c. ¿Qué clase es el ConcreteSubject en esta aplicación? ¿Por qué? (Pista: ¿Quién envía las notificaciones?)
+= class Particle : public Observer, envia las notificaciones con onNotify(const std : : string & event) override
 
+d. ¿Qué clase(s) actúan como ConcreteObserver? ¿Por qué? (Pista: ¿Quién recibe y reacciona a las notificaciones?)
+= class ofApp : public ofBaseApp, public Subject.
+
+##### Sigue el flujo de notificacion:
+a. Localiza el método keyPressed en ofApp.cpp. ¿Qué sucede cuando se presiona la tecla ‘a’? ¿Qué método se llama?
+= Cuando se presiona la 'a' se llama al metodo notify y se le da el string de "attract"
+
+b. Ve al método notify en la clase Subject. ¿Qué hace este método?
+= Ese metodo recorre la lista de observadores y en cada uno llama al metodo onNotify
+
+c. Localiza el método que implementa la interfaz Observer en la clase Particle (onNotify). ¿Qué hace este método cuando recibe el evento “attract”?
+= Cambia el estado de la particula
+
+##### Registro y eliminacion de observadores
+a. ¿En qué parte del código se añaden las instancias de Particle como observadores de ofApp? (Busca dónde se llama a addObserver).
+```c++
+void Subject::addObserver(Observer * observer) {
+	if (!observer) return;
+	if (std::find(observers.begin(), observers.end(), observer) == observers.end()) {
+		observers.push_back(observer);
+	}
+}
+```
+b. Aunque no se usa explícitamente en este ejemplo simple, ¿Dónde se eliminarían los observadores si fuera necesario (por ejemplo, si una partícula se destruyera durante la ejecución)? (Busca removeObserver). ¿Por qué es importante el destructor de ofApp en este contexto?
+= Es importante en ofApp porque elimina los observadores y libera la memoria de cada particula.
+```c++
+void Subject::removeObserver(Observer * observer) {
+	if (!observer) return;
+	observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
+}
+```
 ##### 1. Explica con tus propias palabras el propósito del patrón Observer. ¿Qué problema resuelve? 
+Su proposito es que un objeto notifique a muchos otros cuando un evento ocurre sin que el primer objeto conozca los detalles de los demas. Resuelve problemas como la union entre quien genera el evento y quien reacciona, vuelve mas facil el agregar nuevos observadores y se centra en un solo notify y no multiples.
 
 ##### 2. Dibuja un diagrama que muestre la relación entre Subject, Observer, ofApp y Particle en el caso de estudio, indicando quién es el Sujeto y quiénes los Observadores.
+![diagrama1](https://github.com/user-attachments/assets/6e2ff010-6be2-4d80-9e33-73dba35903d1)
 
 ##### 3. Construye un diagrama de secuencia que muestre cómo funciona el patrón Observer al presionar una tecla.
+![diagrama2](https://github.com/user-attachments/assets/d6527b84-0826-414a-a165-f312d01cb86f)
 
 ##### 4. ¿Qué ventajas crees que ofrece usar el patrón Observer en esta aplicación en comparación con, por ejemplo, que ofApp::update recorriera todas las partículas y les dijera directamente que cambien su comportamiento basado en una variable global? Piensa en términos de acoplamiento y extensibilidad.
+Con el observer, ofApp solo  envia enventos, no necesita conocer que hace cada particula; se encapsula el estado y el comportamiento de la particula.
 
+### Actividad 3
+
+#### Analisis del caso de estudio
+##### Identifica la Factory
+
+a. ¿Qué clase actúa como la factory en este ejemplo?
+= class ParticleFactory
+
+b. ¿Cuál es el “método factory” específico? ¿Es un método de instancia o estático?
+= static Particle * createParticle(const std :: string & type), es estatico.
+
+c. ¿Qué tipo de objeto devuelve este método fábrica?
+= Devuelve un puntero, Particle (Particle*).
+
+##### Proceso de creacion
+
+a. Observa el método ParticleFactory::createParticle. ¿Cómo decide qué tipo de partícula específica crear y configurar?
+= Segun el string que reciba.
+
+b. ¿Qué información necesita el método fábrica para realizar su trabajo?
+= El string type.
+
+c. ¿Qué devuelve si se le pasa un tipo desconocido? ¿Cómo podrías mejorar esto?
+= Una particula no personalizada. Lo mejoraria agregando otra condicion que lance un error, de que la particula no cumple con algun parametro conocido.
+
+##### 1. Explica con tus propias palabras el propósito del patrón Factory Method (o Simple Factory, en este caso). ¿Qué problema principal aborda en la creación de objetos?
+Es para crear objetos sin tener que estar repitiendo el new mas lo demas; ademas se crean los objetos en el mismo lugar y permite encapsular variantes tras una interfaz uniforme.
+
+##### 2. ¿Qué ventajas aporta el uso de ParticleFactory en ofApp::setup en comparación con instanciar y configurar las partículas directamente allí?
+Es mas facil para leer, la inicializacion esta en un solo lugar y si se requieren cambios solo se cambia la factory, garantiza que todo se crea de forma coherente.
+
+##### 3. Imagina que quieres añadir un nuevo tipo de partícula llamada "black_hole" que tiene tamaño grande, color negro y velocidad muy lenta. Describe los pasos que necesitarías seguir para implementar esto utilizando la ParticleFactory existente. ¿Tendrías que modificar ofApp::setup? ¿Por qué sí o por qué no?
+En esta seccion del codigo:
+```c++
+Particle * ParticleFactory::createParticle(const std::string & type) {
+	Particle * particle = new Particle();
+
+	if (type == "star") {
+		particle->size = ofRandom(2.0f, 4.0f);
+		particle->color = ofColor(255, 0, 0);
+	} else if (type == "shooting_star") {
+		particle->size = ofRandom(3.0f, 6.0f);
+		particle->color = ofColor(0, 255, 0);
+		particle->velocity *= 3.0f;
+	} else if (type == "planet") {
+		particle->size = ofRandom(5.0f, 8.0f);
+		particle->color = ofColor(0, 0, 255);
+	}
+	return particle;
+}
+```
+Agregaria otro else if, con particle->size = ofRandom(10.0f,15.0f); particle->color = ofColor(0,0,0); particle->velocity *= 0.1f;
+No modificaria el ofApp::setup() ya que lo estoy implementando en la factory.
+
+##### 4. El método createParticle en el ejemplo es estático. ¿Qué implicaciones (ventajas/desventajas) tiene esto comparado con tener una instancia de ParticleFactory y un método de instancia createParticle()?.
+Se puede llamar sin instanciar una factory y es bueno cuando la factory no necesitaestado.
+No permite herencia o polimorfismo, es mas complejo si se quiere qaue mantenga un cache o un contador.
 
 #### Autoevaluación 
-1, ya que realice una actividad completa y esta autoevaluación. Pienso terminar esta unidad y entregarla completa, ya que perdi un poco de tiempo al mejorar unidades anteriores.
+3, ya que realice una actividad completa y esta autoevaluación.
